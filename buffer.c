@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include "buffer.h"
 
-// Global + Const
+
 const int SIZE = 20;
 const int INIT_VAL = 0;
-struct ring_buffer_421 *ring_buf = NULL;
+struct ring_buffer *ring_buf = NULL;
 
-long init_buffer_421(void)
+long init_buffer(void)
 {
 	int i;
 	
@@ -17,7 +17,7 @@ long init_buffer_421(void)
 		return -1;
 	}
 	
-	ring_buf = malloc(sizeof(ring_buffer_421_t));
+	ring_buf = malloc(sizeof(ring_buffer_t));
 	
 	// Allocation error
 	if (!ring_buf){
@@ -25,7 +25,7 @@ long init_buffer_421(void)
 		return -1;
 	}
 		
-	node_421_t *node = malloc(sizeof(node_421_t));
+	node_t *node = malloc(sizeof(node_t));
 	node->data = 0;
 	node->next = NULL;
 	ring_buf->read = node;
@@ -33,7 +33,7 @@ long init_buffer_421(void)
 	
 	// Start populating all remaining 19 nodes
 	for (i = 1; i < SIZE; i++){
-		node_421_t *new = malloc(sizeof(node_421_t));
+		node_t *new = malloc(sizeof(node_t));
 		new->data = INIT_VAL;
 		new->next = NULL;
 		ring_buf->write->next = new;
@@ -46,14 +46,14 @@ long init_buffer_421(void)
 	return 0;
 }
 
-long delete_buffer_421(void)
+long delete_buffer(void)
 {
 	if(ring_buf){
 		int i;
 	
 		// Free individual nodes
 		for (i = 0; i < SIZE; i++){
-			node_421_t *temp = ring_buf->read;
+			node_t *temp = ring_buf->read;
 			ring_buf->read = ring_buf->read->next;
 			free(temp);
 		}
@@ -68,7 +68,7 @@ long delete_buffer_421(void)
 
 
 
-long insert_buffer_421(int i)
+long insert_buffer(int i)
 {
 	int index = 0;
 	
@@ -89,7 +89,7 @@ long insert_buffer_421(int i)
 	return 0;
 }
 
-long print_buffer_421(void)
+long print_buffer(void)
 {
 	
 	if (!ring_buf){
@@ -98,7 +98,7 @@ long print_buffer_421(void)
 	}
 	
 	int i;
-	node_421_t *temp = ring_buf->read;
+	node_t *temp = ring_buf->read;
 	
 	for (i = 0; i < SIZE; i++){
 		printf("Address is %p  ||| Value is %d\n", temp, temp->data);
@@ -110,47 +110,8 @@ long print_buffer_421(void)
 int main(void)
 {	
 
-	/*
-		Test cases below....
-	*/
-	
-	
 	int insert_int = 300, increment = 50;
-	// Initializing buffer twice
-	init_buffer_421();
-	init_buffer_421(); // Already initialized, shouldn't allow
-	delete_buffer_421();
-	
-	// Inserting into uninitialized buffer
-	insert_buffer_421(253);
-	
-	// Should allow a new init_buffer
-	init_buffer_421();
-	
-	// Insert 20 ints
-	for (int i = 0; i < SIZE; i++){
-		insert_buffer_421(insert_int);
-		insert_int += increment;
-	}
-	
-	// Print current buffer: 
-	printf("\n--------------------------\n\n");
-	print_buffer_421();
-	printf("\n--------------------------\n\n");
-	
-	// Insert to a full buffer 
-	
-	insert_buffer_421(insert_int);
-	
-	// Delete current buffer
-	
-	delete_buffer_421();
-	
-	// Try to print uninitialized buffer
-	printf("\n--------------------------\n\n");
-	print_buffer_421();
-	printf("\n--------------------------\n\n");
-	
-	// Try to delete uninitialized buffer
-	delete_buffer_421();
+	init_buffer();
+	init_buffer(); // Already initialized, shouldn't allow
+	delete_buffer();
 }

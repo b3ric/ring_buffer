@@ -7,22 +7,22 @@ extern "C" {
 #endif
 #define SIZE_OF_BUFFER 20
 
-typedef struct node_421 {
-struct node_421 *next;
+typedef struct node {
+struct node *next;
 int data;
-} node_421_t;
+} node_t;
 
-typedef struct ring_buffer_421 {
+typedef struct ring_buffer {
 int length;
-node_421_t *read;
-node_421_t *write;
-} ring_buffer_421_t;
+node_t *read;
+node_t *write;
+} ring_buffer_t;
 
 #ifndef __KERNEL__
-long init_buffer_421(void);
-long insert_buffer_421(int i);
-long print_buffer_421(void);
-long delete_buffer_421(void);
+long init_buffer(void);
+long insert_buffer(int i);
+long print_buffer(void);
+long delete_buffer(void);
 
 #endif
 #ifdef __cplusplus
